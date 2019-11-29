@@ -1,5 +1,7 @@
 import React from 'react'
-import _ from 'lodash'
+import { connect } from 'react-redux'
+import Tile from './components/Tile'
+
 import './App.css'
 
 interface IProps {
@@ -7,6 +9,8 @@ interface IProps {
 
 interface IState {
   gameArray: Array<Array<number>>
+  score: number
+  lost: boolean
 }
 
 class App extends React.Component<IProps, IState> {
@@ -14,74 +18,15 @@ class App extends React.Component<IProps, IState> {
     super(props)
 
     this.state = {
-      gameArray: this.init()
+      gameArray: this.init(),
+      score: 0,
+      lost: false
     }
-
-    document.onkeydown = this.handleKeyPress
   }
 
   init = () => {
-    let gameArray = [[2,0,4,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
-    let cell1 = [_.random(0,3),_.random(0,3)]
-    let cell2 = cell1
-    while(cell1 === cell2){
-      cell2 = [_.random(0,3),_.random(0,3)]
-    }
-    if(_.random(0,1,true) > 0.1){
-      gameArray[cell1[0]][cell1[1]] = 2
-    } else {
-      gameArray[cell1[0]][cell1[1]] = 4
-    }
-    if(_.random(0,1,true) > 0.1){
-      gameArray[cell2[0]][cell2[1]] = 2
-    } else {
-      gameArray[cell2[0]][cell2[1]] = 4
-    }
-    return gameArray
+    return [[0,0,0,0],[0,0,0,0],[0,0,0,0],[0,0,0,0]]
   }
-
-  handleKeyPress = (e: KeyboardEvent) => {
-    let gameArray = this.state.gameArray
-    switch (e.keyCode) {
-      case 37:
-        for( let i = 0; i < gameArray.length; i++){
-          gameArray.splice(i,1, this.mergeRowCells(gameArray[i]))
-        }
-        break;
-      case 38:
-
-        break;
-      case 39:
-        for( let i = 0; i < gameArray.length; i++){
-          gameArray.splice(i,1, this.mergeRowCells(gameArray[i].reverse()).reverse())
-        }
-        break;
-      case 40:
-
-        break;
-    
-      default:
-        break;
-    }
-    console.log(gameArray)
-    this.setState({
-      gameArray: gameArray
-    })
-  }
-
-  mergeRowCells = (row: Array<number>) => {
-    let filteredRow = row.filter(value => value !== 0)
-    for(let i = 0; i < filteredRow.length; i++){
-      if(filteredRow[i] === filteredRow[i+1]){
-        let val = filteredRow[i]
-        filteredRow.shift()
-        filteredRow.splice(i, 1, val*2)
-      }
-    }
-    while(filteredRow.length < 4) filteredRow.push(0)
-    return filteredRow
-  }
-
   render() {
     return (
       <div className="app">
@@ -94,7 +39,7 @@ class App extends React.Component<IProps, IState> {
               <div key={i} className="box-row">
               {
                 row.map((cell, y) => (
-                  <div key={y} className="box">{cell ? cell : ''}</div>
+                  <Tile key={y} number={cell}/>
                 ))
               } 
               </div>

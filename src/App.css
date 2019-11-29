@@ -18,13 +18,13 @@
 }
 
 .app-title {
-    position: absolute;
+    position: fixed;
     margin-left: 50vw;
     margin-top: 10vh;
     transform: translate(-50%, -50%);
 }
 .box-container {
-  position: absolute;
+  position: fixed;
   top: 50vh;
   left: 50vw;
   transform: translate(-50%, -50%);
@@ -48,7 +48,7 @@
   margin-right: 15px;
   float: left;
 
-  border-radius: 3px;
+  border-radius: 10px;
 
   background: #424855;
 
@@ -62,4 +62,15 @@
 
 .box:last-child{
   margin-right: 0px;
+}
+
+.score {
+  position: fixed;
+  top: 10vh;
+  right: 20vw;
+  color: white;
+  background: #424855;
+  padding: 15px;
+  border-radius: 20px;
+  font-size: x-large;
 }
