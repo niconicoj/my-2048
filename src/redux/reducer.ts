@@ -11,22 +11,24 @@ type TilesAction =
 | { type: 'MOVE_LEFT' }
 | { type: 'MOVE_RIGHT' }
 
-
-
 export function tileReducer(state: TilesState, action: TilesAction): TilesState {
+  let newState = undefined
   switch (action.type) {
     case 'MOVE_UP': 
-      return state
+      newState = process(transpose(state.tiles), state.score)
+      return { tiles: transpose(newState.tiles), score : newState.score }
 
     case 'MOVE_DOWN':
-      return state
+      newState = process(reverseAll(transpose(state.tiles)), state.score)
+      return { tiles: transpose(reverseAll(newState.tiles)), score : newState.score }
 
     case 'MOVE_LEFT':
-        let newState = process(state.tiles, state.score)
+        newState = process(state.tiles, state.score)
         return newState
 
     case 'MOVE_RIGHT':
-      return state
+        newState = process(reverseAll(state.tiles), state.score)
+        return { tiles: reverseAll(newState.tiles), score : newState.score }
 
     default:
       return state
@@ -62,6 +64,14 @@ const mergeRowCells = (row: Array<number>) => {
   }
   while(filteredRow.length < 4) filteredRow.push(0)
   return {row: filteredRow, score: score}
+}
+
+const reverseAll = (tiles: number[][]) => {
+  return tiles.map((row) => row.reverse())
+}
+
+const transpose = (tiles: number[][]) => {
+  return tiles[0].map((col, i) => tiles.map(row => row[i]));
 }
 
 export const spawnTile = (tiles: number[][]) => {
