@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+this is my recreation of the game 2048. I made it using Typescript and react.
 
 ## Available Scripts
 
